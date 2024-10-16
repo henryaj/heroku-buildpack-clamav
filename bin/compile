@@ -17,13 +17,3 @@ echo "LocalSocket /app/config/antivirus/clamd.sock" > "${build}/config/antivirus
 
 # Create the socket file for the daemon:
 touch "${build}/config/antivirus/clamd.sock"
-
-# Check for updates in the antivirus database
-# Use the cache directory so that if the database hasn't changed, we can simply use the artifact from the previous deploy
-mkdir -p "${cache}/clamav-data"
-mkdir -p "${build}/logs"
-freshclam --config-file="${build}/config/antivirus/freshclam.conf" --datadir="${cache}/clamav-data/" --log="${build}/logs/freshclam.log"
-
-# Replace the current virus database with the new one:
-rm -rf "${build}/.clamav-data"
-cp -rp "${cache}/clamav-data" "${build}/.clamav-data"
